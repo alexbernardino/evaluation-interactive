@@ -17,13 +17,17 @@ canvas{flex:1;min-height:0;height:0;width:100%}.legend{flex:none;gap:3px 9px;fon
 #status{flex:none;margin:0;min-height:12px;font-size:9px}#error{flex:none;margin:0;max-height:65px;overflow:auto}.protocol{margin:12px 0}.busy .charts{opacity:.7}footer{padding:6px 20px}
 @media(max-width:1100px){.dashboard{grid-template-columns:minmax(0,1fr) 90px;gap:7px}.charts{grid-template-columns:1fr;grid-template-rows:repeat(2,minmax(0,1fr))}.metric b{font-size:14px}.plot-heading h2{font-size:14px}.plot-card{padding:8px}.plot-heading .eyebrow{display:none}.plot-heading{margin-bottom:4px}.metric small{display:none}}
 @media(max-width:650px) and (orientation:portrait){
- header{padding:7px 10px}.mark{padding:8px 6px;font-size:15px}.brand{gap:8px}.brand b{font-size:9px}h1{font-size:16px}#version{font-size:8px}footer{display:none}
+ header{padding:4px 10px}.mark{padding:4px 6px;font-size:12px}.brand{gap:7px}.brand b,#version{display:none}.brand h1{font-size:13px;margin:3px 0;white-space:nowrap}footer{display:none}
  main{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1.8fr) minmax(135px,1fr);padding:6px;gap:6px}
  .workspace{grid-row:1;order:0;gap:5px}.controls{grid-row:2;order:1;padding:10px;overflow-y:auto;max-height:none;border-top:3px solid #bdc9e7;border-radius:12px}.controls h2{font-size:15px}.controls h2 small{display:inline;margin-left:8px}.controls>.eyebrow{display:none}
- .toolbar{gap:4px}.tabs button{padding:7px 4px;font-size:10px}.toolbar>.actions{width:100%}.toolbar>.actions button{flex:1;font-size:9px;padding:6px 3px}
+ .toolbar{gap:4px;flex-wrap:nowrap}.tabs{width:auto;gap:3px;flex-wrap:nowrap}.tabs button{flex:none;padding:6px 5px;font-size:9px;white-space:nowrap}.toolbar>.actions{width:auto;flex-wrap:nowrap;gap:3px}.toolbar>.actions button{flex:none;font-size:9px;padding:6px 5px}
  #status{display:none}.dashboard{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:5px}.metrics{grid-column:1;grid-row:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.metric{padding:7px 5px;border-radius:7px}.metric span{font-size:9px;line-height:1.2}.metric b{font-size:12px}.metric small{display:none}
  .charts{grid-column:1;grid-row:1;gap:5px;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:minmax(0,1fr)}.plot-card{padding:5px;border-radius:9px}.plot-heading{gap:2px;margin-bottom:2px;min-height:46px;align-content:start}.plot-heading h2{font-size:11px;margin:0}.plot-heading .actions{gap:2px}.plot-heading .actions label{font-size:8px}.plot-heading .actions button{font-size:8px;padding:4px}.plot-heading input[type=checkbox]{width:11px;height:11px;margin:2px}
  .legend{font-size:7px;gap:1px 5px;line-height:1.15;margin-top:2px}.legend span::before{width:7px;margin-right:2px}.reading .plot-options label{font-size:11px}
+}
+.compact-label{display:none}
+@media(max-width:650px) and (orientation:portrait), (orientation:landscape) and (max-height:600px){
+ .toolbar .wide-label{display:none}.toolbar .compact-label{display:inline}.resample-caption{font-size:8px;color:var(--muted)}
 }
 @media(orientation:landscape) and (max-height:600px){
  body{overflow:hidden}header{padding:4px 10px}.brand b,#version{display:none}.brand h1{font-size:13px}.mark{padding:4px 6px;font-size:12px}.brand{gap:7px}footer{display:none}
