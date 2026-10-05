@@ -26,6 +26,10 @@ The two plots stay side by side in a viewport-sized dashboard. Compact metrics s
 
 ## Statistical conventions
 
+- Increasing test size improves evaluation precision without changing the fitted predictors or their underlying variance across training samples. The displayed Monte Carlo averages can still change because they use a finite set of evaluation inputs.
+- The squared-error decomposition assumes the signal is E[Y | X = x], conditional noise has zero mean, and new observation noise is independent of training. Gaussianity is not required by the decomposition, although this simulator uses Gaussian noise.
+- Complexity curves illustrate typical patterns, not universal monotonic bias/variance laws. Fold-score SD / √K is not generally a valid CV standard error because the training portions overlap.
+
 - Fresh IID datasets from a known population are used, not repeated overlapping partitions of one finite dataset. Overlap would correlate repeats and confound the independence assumptions in the lecture's uncertainty formulas.
 - All models use ordinary least squares. Householder QR on a domain-scaled Legendre basis avoids explicitly inverting the normal equations. Rank failure is shown as an error; models are never silently dropped or regularized.
 - Mean predictor and variance at a point use B as denominator. This makes the finite-ensemble squared-error decomposition exact. Bias² has Monte Carlo error (including finite-ensemble mean variance); it is not an unbiased estimator of population squared bias.
