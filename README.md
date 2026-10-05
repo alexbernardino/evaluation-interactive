@@ -22,7 +22,7 @@ Controls configure sinusoidal/linear/quadratic truth, amplitude, phase, cycles, 
 
 Both plots have independent Fit axes and Auto-fit controls. Automatic fitting is off by default. Complexity and test-MSE histogram views remember separate limits and auto-fit settings; disabling auto-fit freezes the current limits. Changing log/linear scale preserves the complexity plot's underlying MSE bounds. Out-of-view curves and histogram counts are flagged; histogram observations outside the current limits are not folded into the end bins. Restore defaults resets all axes.
 
-The plots and compact metric rail stay visible in a viewport-sized dashboard. Only the parameter/interpretation pane scrolls: below the two stacked plots in mobile portrait, on the left of the side-by-side plots in mobile landscape and desktop. Detailed explanations, sample selection, visibility options and pointwise readings remain available in that scrolling pane.
+The two plots stay side by side in a viewport-sized dashboard. Compact metrics sit below them in mobile portrait to preserve plot width, and in a side rail on desktop and mobile landscape. Only the parameter/interpretation pane scrolls: below the plots in mobile portrait and on the left in landscape and desktop. Detailed explanations, sample selection, visibility options and pointwise readings remain available in that scrolling pane.
 
 ## Statistical conventions
 

@@ -70,7 +70,8 @@ function setup(id,bounds,xlabel,ylabel,log=false){
  canvas.dataset.axes=JSON.stringify(bounds);
  const tick=value=>!compact?fmt(value):value===0?'0':Math.abs(value)>=1000||Math.abs(value)<.01?value.toExponential(0):String(Number(value.toPrecision(2)));
  for(let i=0;i<=4;i++){const v=bounds.ymin+(bounds.ymax-bounds.ymin)*i/4,y=Y(v);ctx.strokeStyle='#e4e0d8';ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();ctx.textAlign='right';ctx.fillText(tick(log?10**v-1:v),left-6,y+3);}
- for(let i=0;i<=4;i++){const x=bounds.xmin+(bounds.xmax-bounds.xmin)*i/4;ctx.strokeStyle='#eeeae3';ctx.beginPath();ctx.moveTo(X(x),top);ctx.lineTo(X(x),bottom);ctx.stroke();ctx.textAlign='center';ctx.fillText(fmt(x),X(x),bottom+17);}
+ const xTicks=w<220?2:4;
+ for(let i=0;i<=xTicks;i++){const x=bounds.xmin+(bounds.xmax-bounds.xmin)*i/xTicks;ctx.strokeStyle='#eeeae3';ctx.beginPath();ctx.moveTo(X(x),top);ctx.lineTo(X(x),bottom);ctx.stroke();ctx.textAlign='center';ctx.fillText(tick(x),X(x),bottom+17);}
  ctx.fillStyle='#45516a';ctx.textAlign='center';ctx.fillText(xlabel,(left+right)/2,h-3);ctx.save();ctx.translate(compact?8:12,(top+bottom)/2);ctx.rotate(-Math.PI/2);ctx.fillText(ylabel,0,0);ctx.restore();
  return {ctx,w,h,left,right,top,bottom,X,Y,bounds};
 }
