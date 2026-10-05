@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {defaults,fit,predict,sample,truth,evaluate,decompose,trainingExperiment,testingExperiment,validate} from '../model.js';
+const close=(a,b,tol=1e-9)=>assert.ok(Math.abs(a-b)<=tol*Math.max(1,Math.abs(a),Math.abs(b)),`${a} ≠ ${b}`);
+test('QR recovers a known polynomial, including intercept',()=>{const data=Array.from({length:30},(_,i)=>{const x=-2+i/5;return{x,y:2-3*x+.4*x*x};});const f=fit(data,2,-2,4);for(const x of [-2,-.5,0,1,3.8])close(predict(f,x),2-3*x+.4*x*x);});
+test('constant model is sample mean',()=>{const f=fit([{x:0,y:1},{x:1,y:4},{x:2,y:10}],0,0,2);close(predict(f,1.2),5);});
+test('nested polynomial training error never increases',()=>{const data=sample(defaults,30,1729);let last=Infinity;for(let d=0;d<=12;d++){const error=evaluate(fit(data,d,-1,1),data).mse;assert.ok(error<=last+1e-9);last=error;}});
+test('finite ensemble decomposition is exact',()=>{const predictions=[[1,2],[3,5],[-1,8]],target=[2,3],noise=.3,s=decompose(predictions,target,noise);const direct=predictions.flatMap(p=>p.map((v,j)=>(v-target[j])**2+noise)).reduce((a,b)=>a+b)/6;close(s.total,direct);});
+test('random streams are reproducible and prefix stable',()=>{assert.deepEqual(sample(defaults,10,3),sample(defaults,20,3).slice(0,10));assert.notDeepEqual(sample(defaults,10,3),sample(defaults,10,4));});
+test('zero-noise correct model has essentially zero bias and variance',()=>{const c={...defaults,signal:'quadratic',noise:0,repeats:20};const e=trainingExperiment(c);assert.ok(e.curves[2].bias2<1e-20);assert.ok(e.curves[2].variance<1e-20);});
+test('test-only resampling does not change fitted models',()=>{const c={...defaults,repeats:20};const a=trainingExperiment(c),b=trainingExperiment({...c,testSeed:44,ntest:40});assert.deepEqual(a.models,b.models);assert.deepEqual(a.train,b.train);assert.notDeepEqual(a.test,b.test);});
+test('training-only resampling leaves the test set fixed',()=>{const c={...defaults,repeats:20};const a=trainingExperiment(c),b=trainingExperiment({...c,trainSeed:44});assert.deepEqual(a.test,b.test);assert.notDeepEqual(a.models,b.models);});
+test('fixed-predictor test SE scales with inverse square root of test size',()=>{const c={...defaults,repeats:20},f=fit(sample(c,30,1),3,-1,1),snapshot=JSON.stringify(f);const a=testingExperiment(c,f),b=testingExperiment({...c,ntest:400},f);close(a.expectedSE,2*b.expectedSE);close(a.risk,b.risk);assert.equal(JSON.stringify(f),snapshot);});
+test('known noise-only risk and SE match Gaussian loss moments',()=>{const c={...defaults,amplitude:0,offset:0,noise:.4,repeats:200,ntest:100};const t=testingExperiment(c,{coef:[0],lo:-1,hi:1});close(t.risk,.4);close(t.expectedSE,.4*Math.sqrt(2/100));assert.ok(Math.abs(t.mean-.4)<.02);assert.ok(Math.abs(Math.sqrt(t.variance)/t.expectedSE-1)<.2);});
+test('loss standard error uses sample variance, not prediction variance',()=>{const e=evaluate({coef:[0],lo:0,hi:1},[{x:0,y:1},{x:1,y:2}]);close(e.mse,2.5);close(e.se,1.5);});
+test('invalid settings and rank deficiency are explicit errors',()=>{assert.throws(()=>validate({...defaults,xmax:-1}));assert.throws(()=>validate({...defaults,degree:2.5}));assert.throws(()=>validate({...defaults,noise:NaN}));assert.throws(()=>fit([{x:1,y:2},{x:1,y:3}],1,0,2));});
+test('sinusoid uses frequency as cycles across the configured interval',()=>{close(truth(-1,defaults),0);close(truth(0,defaults),0);close(truth(.5,defaults),1);});
